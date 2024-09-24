@@ -1,0 +1,46 @@
+-- Criação do banco de dados
+CREATE DATABASE AcademiaJiuJitsu;
+
+-- Seleciona o banco de dados criado
+USE AcademiaJiuJitsu;
+
+-- Criação da tabela de Alunos
+CREATE TABLE Alunos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    idade INT,
+    genero ENUM('Masculino', 'Feminino', 'Outro'),
+    turno ENUM('Manhã', 'Noite') NOT NULL
+);
+
+-- Criação da tabela de Frequência
+CREATE TABLE Frequencia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aluno_id INT,
+    data_aula DATE NOT NULL,
+    FOREIGN KEY (aluno_id) REFERENCES Alunos(id)
+);
+
+-- Inserção de dados de exemplo na tabela de Alunos
+INSERT INTO Alunos (nome, idade, genero, turno) VALUES
+('João Silva', 15, 'Masculino', 'Manhã'),
+('Maria Oliveira', 22, 'Feminino', 'Noite'),
+('Carlos Pereira', 18, 'Masculino', 'Manhã'),
+('Ana Santos', 25, 'Feminino', 'Noite');
+
+-- Inserção de dados de exemplo na tabela de Frequência
+INSERT INTO Frequencia (aluno_id, data_aula) VALUES
+(1, '2024-09-01'),
+(1, '2024-09-03'),
+(2, '2024-09-01'),
+(3, '2024-09-02'),
+(4, '2024-09-04');
+
+-- Consulta para verificar a frequência dos alunos
+SELECT A.nome, COUNT(F.data_aula) AS total_aulas
+FROM Alunos A
+LEFT JOIN Frequencia F ON A.id = F.aluno_id
+GROUP BY A.id;
+
+-- Consulta para verificar a lista de alunos por turno
+SELECT nome, turno FROM Alunos;
